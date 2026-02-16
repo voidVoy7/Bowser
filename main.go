@@ -23,6 +23,7 @@ func main() {
 		fmt.Println("  remove")
 		fmt.Println("---zypper---")
 		fmt.Println("  update")
+		fmt.Println("  upgrade")
 		fmt.Println("  patch")
 		fmt.Println("  search")
 		os.Exit(1)
@@ -67,11 +68,14 @@ func main() {
 			zypper.ZypperPatchCommand(os.Args[2:])
 		case "search":
 			zypper.ZypperSearchCommand(os.Args[2:])
+		case "upgrade":
+			zypper.ZypperDistUpgradeCommand(os.Args[2:])
 
 		default:
 			fmt.Println("Unknown command:", os.Args[1])
 			fmt.Println("Commands:")
 			fmt.Println("  update")
+			fmt.Println("  upgrade")
 			fmt.Println("  patch")
 			fmt.Println("  search")
 		}
