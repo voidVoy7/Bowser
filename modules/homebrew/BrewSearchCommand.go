@@ -10,7 +10,14 @@ import (
 
 func BrewSearchCommand(args []string) {
 	searchFlags := pflag.NewFlagSet("search", pflag.ExitOnError)
+	searchFlags.Usage = func() {
+		fmt.Println("Usage: styx search [option] <package>")
+		fmt.Println()
+		fmt.Println("Options:")
+		searchFlags.PrintDefaults()
+	}
 
+	help := searchFlags.BoolP("help", "h", false, "show helpful information")
 	verbose := searchFlags.BoolP("verbose", "v", false, "show extra output")
 	useFormula := searchFlags.BoolP("formula", "f", false, "search for formulas/formulae")
 	useCask := searchFlags.BoolP("cask", "c", false, "Search for casks")
@@ -19,15 +26,18 @@ func BrewSearchCommand(args []string) {
 
 	searchFlags.Parse(args)
 
+	if *help {
+		searchFlags.Usage()
+		return
+	}
+
 	pkgs := searchFlags.Args()
 
 	if len(pkgs) == 0 {
-		fmt.Println("Invalid usage: bowser search requires a package name")
-		fmt.Println("A few examples:")
-		fmt.Println("  bowser search wget")
-		fmt.Println("  bowser search htop")
-		fmt.Println("  bowser search google-chrome")
-		os.Exit(1)
+		fmt.Println("Invalid usage: styx search requires a package name")
+		fmt.Println()
+		searchFlags.Usage()
+		return
 	}
 
 	brewArgs := []string{"search"}

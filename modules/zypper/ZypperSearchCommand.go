@@ -33,6 +33,11 @@ func ZypperSearchCommand(args []string) {
 
 	searchFlag.Parse(args)
 
+	if *help {
+		searchFlag.Usage()
+		return
+	}
+
 	pkgs := searchFlag.Args()
 
 	if len(pkgs) == 0 {
@@ -89,11 +94,6 @@ func ZypperSearchCommand(args []string) {
 	}
 
 	zypperArgs = append(zypperArgs, pkgs...)
-
-	if *help {
-		searchFlag.Usage()
-		return
-	}
 
 	if *verbose {
 		fmt.Println("Running: zypper search")

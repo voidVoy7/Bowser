@@ -23,6 +23,11 @@ func ZypperInstallCommand(args []string) {
 
 	installFlag.Parse(args)
 
+	if *help {
+		installFlag.Usage()
+		return
+	}
+
 	pkgs := installFlag.Args()
 
 	if len(pkgs) == 0 {
@@ -42,11 +47,6 @@ func ZypperInstallCommand(args []string) {
 
 	if *verbose {
 		fmt.Println("Running: zypper install")
-	}
-
-	if *help {
-		installFlag.Usage()
-		return
 	}
 
 	cmd := exec.Command("zypper", zypperArgs...)

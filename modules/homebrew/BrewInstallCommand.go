@@ -10,22 +10,32 @@ import (
 
 func BrewInstallCommand(args []string) {
 	installFlags := pflag.NewFlagSet("install", pflag.ExitOnError)
+	installFlags.Usage = func() {
+		fmt.Println("Usage: styx install [option] <package>")
+		fmt.Println()
+		fmt.Println("Options:")
+		installFlags.PrintDefaults()
+	}
 
+	help := installFlags.BoolP("help", "h", false, "show helpful information")
 	verbose := installFlags.BoolP("verbose", "v", false, "show extra output")
 	useFormula := installFlags.BoolP("formula", "f", false, "formula to install")
 	useCask := installFlags.BoolP("cask", "c", false, "cask to install")
 
 	installFlags.Parse(args)
 
+	if *help {
+		installFlags.Usage()
+		return
+	}
+
 	pkgs := installFlags.Args()
 
 	if len(pkgs) == 0 {
-		fmt.Println("Invalid usage: bowser install requires a package name")
-		fmt.Println("A few examples:")
-		fmt.Println("  bowser install wget")
-		fmt.Println("  bowser install --formula wget")
-		fmt.Println("  bowser install --cask google-chrome")
-		os.Exit(1)
+		fmt.Println("Invalid usage: styx install requires a package name")
+		fmt.Println()
+		installFlags.Usage()
+		return
 	}
 
 	brewArgs := []string{"install"}
