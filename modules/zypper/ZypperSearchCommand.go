@@ -11,7 +11,7 @@ import (
 func ZypperSearchCommand(args []string) {
 	searchFlag := pflag.NewFlagSet("search", pflag.ExitOnError)
 	searchFlag.Usage = func() {
-		fmt.Println("Usage: bowser search [options] <package>")
+		fmt.Println("Usage: styx search [options] <package>")
 		fmt.Println()
 		fmt.Println("Options:")
 		searchFlag.PrintDefaults()
@@ -36,7 +36,7 @@ func ZypperSearchCommand(args []string) {
 	pkgs := searchFlag.Args()
 
 	if len(pkgs) == 0 {
-		fmt.Println("Invalid usage: bowser search requires a package name")
+		fmt.Println("Invalid usage: styx search requires a package name")
 		fmt.Println()
 		searchFlag.Usage()
 		return
@@ -106,7 +106,7 @@ func ZypperSearchCommand(args []string) {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("zypper install failed", err)
+		fmt.Println("zypper search failed", err)
 		os.Exit(1)
 	}
 }

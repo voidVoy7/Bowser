@@ -26,6 +26,7 @@ func main() {
 		fmt.Println("  upgrade")
 		fmt.Println("  patch")
 		fmt.Println("  search")
+		fmt.Println("  install")
 		os.Exit(1)
 	}
 
@@ -70,6 +71,8 @@ func main() {
 			zypper.ZypperSearchCommand(os.Args[2:])
 		case "upgrade":
 			zypper.ZypperDistUpgradeCommand(os.Args[2:])
+		case "install":
+			zypper.ZypperInstallCommand(os.Args[2:])
 
 		default:
 			fmt.Println("Unknown command:", os.Args[1])
@@ -78,6 +81,7 @@ func main() {
 			fmt.Println("  upgrade")
 			fmt.Println("  patch")
 			fmt.Println("  search")
+			fmt.Println("  install")
 		}
 	}
 
