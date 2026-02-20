@@ -10,7 +10,14 @@ import (
 
 func ZypperPatchCommand(args []string) {
 	patchFlag := pflag.NewFlagSet("patch", pflag.ExitOnError)
+	patchFlag.Usage = func() {
+		fmt.Println("Usage: styx patch [option]")
+		fmt.Println()
+		fmt.Println("Options:")
+		patchFlag.PrintDefaults()
+	}
 
+	help := patchFlag.BoolP("help", "h", false, "show helpful information")
 	verbose := patchFlag.BoolP("verbose", "v", false, "show extra output")
 	useDetails := patchFlag.BoolP("details", "d", false, "show more details of the patch process")
 	useReplaceFiles := patchFlag.BoolP("replacefiles", "r", false, "install the packages even if they would replace other files")
@@ -29,6 +36,11 @@ func ZypperPatchCommand(args []string) {
 
 	if *verbose {
 		fmt.Println("Running: zypper patch")
+	}
+
+	if *help {
+		patchFlag.Usage()
+		return
 	}
 
 	cmd := exec.Command("zypper", zypperArgs...)

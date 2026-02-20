@@ -10,7 +10,14 @@ import (
 
 func ZypperUpdateCommand(args []string) {
 	updateFlag := pflag.NewFlagSet("update", pflag.ExitOnError)
+	updateFlag.Usage = func() {
+		fmt.Println("Usage: styx update [option]")
+		fmt.Println()
+		fmt.Println("Options")
+		updateFlag.PrintDefaults()
+	}
 
+	help := updateFlag.BoolP("help", "h", false, "show helpful information")
 	verbose := updateFlag.BoolP("verbose", "v", false, "show extra output")
 	useDetails := updateFlag.BoolP("details", "d", false, "show more details of the update process")
 
@@ -24,6 +31,11 @@ func ZypperUpdateCommand(args []string) {
 
 	if *verbose {
 		fmt.Println("Running: zypper update")
+	}
+
+	if *help {
+		updateFlag.Usage()
+		return
 	}
 
 	cmd := exec.Command("zypper", zypperArgs...)

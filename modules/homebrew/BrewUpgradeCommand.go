@@ -10,10 +10,22 @@ import (
 
 func BrewUpgradeCommmand(args []string) {
 	upgradeflags := pflag.NewFlagSet("upgrade", pflag.ExitOnError)
+	upgradeflags.Usage = func() {
+		fmt.Println("Usage: styx upgrade [option]")
+		fmt.Println()
+		fmt.Println("Options:")
+		upgradeflags.PrintDefaults()
+	}
 
+	help := upgradeflags.BoolP("help", "h", false, "show helpful information")
 	verbose := upgradeflags.BoolP("verbose", "v", false, "show extra output")
 
 	upgradeflags.Parse(args)
+
+	if *help {
+		upgradeflags.Usage()
+		return
+	}
 
 	if *verbose {
 		fmt.Println("Running: brew upgrade")

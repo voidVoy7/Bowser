@@ -10,7 +10,14 @@ import (
 
 func BrewRemoveCommand(args []string) {
 	removeFlags := pflag.NewFlagSet("remove", pflag.ExitOnError)
+	removeFlags.Usage = func() {
+		fmt.Println("Usage: styx remove [option] <package>")
+		fmt.Println()
+		fmt.Println("Options:")
+		removeFlags.PrintDefaults()
+	}
 
+	help := removeFlags.BoolP("help", "h", false, "show helpful information")
 	verbose := removeFlags.BoolP("verbose", "v", false, "show extra output")
 	useForce := removeFlags.BoolP("force", "r", false, "force the uninstall process")
 	useIgnore := removeFlags.BoolP("ignore-dependencies", "i", false, "continue the process even if the package is a dependency of something")
@@ -20,15 +27,18 @@ func BrewRemoveCommand(args []string) {
 
 	removeFlags.Parse(args)
 
+	if *help {
+		removeFlags.Usage()
+		return
+	}
+
 	pkgs := removeFlags.Args()
 
 	if len(pkgs) == 0 {
-		fmt.Println("Invalid usage: bowser remove requires a package name")
-		fmt.Println("A few examples:")
-		fmt.Println("  bowser remove wget")
-		fmt.Println("  bowser remove --force htop")
-		fmt.Println("  bowser remove --ignore-dependencies fastfetch")
-		fmt.Println("  bowser remove --zap google-chrome")
+		fmt.Println("Invalid usage: styx remove requires a package name")
+		fmt.Println()
+		removeFlags.Usage()
+		return
 	}
 
 	brewArgs := []string{"remove"}
